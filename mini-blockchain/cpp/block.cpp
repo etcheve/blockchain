@@ -4,14 +4,14 @@
 #include <iomanip>
 #include <sstream>
 
-// ---------------------------------------------------------------------------
-// Block
-// ---------------------------------------------------------------------------
-Block::Block(uint64_t index, uint64_t timestamp, const std::string& data,
+static std::string bytes_to_hex(const unsigned char* data, std::size_t len);
+
+Block::Block(uint64_t index, uint64_t timestamp,
+             std::vector<Transaction> transactions,
              const std::string& previous_hash, uint32_t difficulty)
     : index_(index)
     , timestamp_(timestamp)
-    , data_(data)
+    , transactions_(std::move(transactions))
     , previous_hash_(previous_hash)
     , difficulty_(difficulty)
     , nonce_(0)
@@ -22,7 +22,7 @@ std::string Block::compute_hash() const {
     std::string payload =
         std::to_string(index_)      +
         std::to_string(timestamp_)  +
-        data_                       +
+        serialize_transactions()    +
         previous_hash_              +
         std::to_string(difficulty_) +
         std::to_string(nonce_);
@@ -36,8 +36,15 @@ std::string Block::compute_hash() const {
 }
 
 // ---------------------------------------------------------------------------
-// Internal helper: SHA256 bytes -> lowercase hex string
+// private helpers
 // ---------------------------------------------------------------------------
+std::string Block::serialize_transactions() const {
+    std::string s;
+    for (const auto& tx : transactions_)
+        s += tx.from + tx.to + std::to_string(tx.amount);
+    return s;
+}
+
 static std::string bytes_to_hex(const unsigned char* data, std::size_t len) {
     std::ostringstream oss;
     oss << std::hex << std::setfill('0');

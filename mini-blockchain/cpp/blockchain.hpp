@@ -1,6 +1,7 @@
 #pragma once
 
 #include "block.hpp"
+#include "transaction.hpp"
 #include <cstdint>
 #include <vector>
 #include <string>
@@ -10,7 +11,7 @@ public:
     explicit Blockchain(uint32_t difficulty = 4);   // creates the genesis block
 
     const Block& get_latest_block() const;
-    void         add_block(const std::string& data);
+    void         add_block(std::vector<Transaction> transactions);
     bool         is_valid() const;
 
     uint32_t difficulty() const { return difficulty_; }

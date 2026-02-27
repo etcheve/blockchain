@@ -4,7 +4,7 @@ CXXFLAGS := -std=c++17 -Wall -Wextra -O2 \
 LDFLAGS  := -L/opt/homebrew/lib -lssl -lcrypto
 
 TARGET  := blockchain
-SRCS    := main.cpp block.cpp blockchain.cpp
+SRCS    := main.cpp block.cpp miner.cpp blockchain.cpp
 OBJS    := $(SRCS:.cpp=.o)
 
 .PHONY: all clean

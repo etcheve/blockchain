@@ -11,12 +11,14 @@ Test suite for connecting to crypto exchange APIs and measuring response times. 
 
 ## Exchanges
 
-| Exchange  | Sandbox Available | Sandbox URL                          | Docs |
-|-----------|:-----------------:|--------------------------------------|------|
-| Binance   | ✅                | https://testnet.binance.vision       | [API Docs](https://testnet.binance.vision/) |
-| Coinbase  | ✅                | https://api-public.sandbox.exchange.coinbase.com | [API Docs](https://docs.cdp.coinbase.com/exchange/docs/sandbox) |
-| Kraken    | ✅                | https://demo-futures.kraken.com      | [API Docs](https://docs.kraken.com/api/) |
-| Upbit     | ❌                | — (no official sandbox)             | [API Docs](https://docs.upbit.com/) |
+| Exchange | Environment | Base URL | Sandbox Mode | Docs |
+|----------|-------------|----------|:------------:|------|
+| Binance  | Testnet | https://testnet.binance.vision | Separate URL | [Docs](https://testnet.binance.vision/) |
+| Coinbase | Sandbox | https://api-public.sandbox.exchange.coinbase.com | Separate URL | [Docs](https://docs.cdp.coinbase.com/exchange/docs/sandbox) |
+| Kraken   | Production public | https://api.kraken.com/0/public | No sandbox (public endpoints only) | [Docs](https://docs.kraken.com/api/) |
+| Upbit    | Production public | https://api.upbit.com/v1 | No sandbox (public endpoints only) | [Docs](https://docs.upbit.com/) |
+| OKX      | Simulated trading | https://www.okx.com | Header: `x-simulated-trading: 1` | [Docs](https://www.okx.com/docs-v5/en/) |
+| Bybit    | Testnet | https://api-testnet.bybit.com | Separate URL | [Docs](https://bybit-exchange.github.io/docs/v5/intro) |
 
 ## Structure
 
@@ -24,13 +26,25 @@ Test suite for connecting to crypto exchange APIs and measuring response times. 
 market-connection/
   binance/     — Binance Spot Testnet
   coinbase/    — Coinbase Exchange Sandbox
-  kraken/      — Kraken Demo/Futures Sandbox
-  upbit/       — Upbit (production, read-only endpoints)
+  kraken/      — Kraken (production public endpoints)
+  upbit/       — Upbit (production public endpoints)
+  okx/         — OKX Simulated Trading
+  bybit/       — Bybit Testnet
+```
+
+Each exchange folder follows the same layout:
+```
+<exchange>/
+  connection/
+    <exchange>_client.hpp   — Response struct + client interface
+    <exchange>_client.cpp   — curl HTTP logic
+  main.cpp                  — prints server time + BTC ticker
+  Makefile
 ```
 
 ## Authentication
 
-Each exchange requires API keys. Generate sandbox keys from each exchange's testnet portal and store them locally as `*.ignore.*` files (git-ignored).
+Authenticated endpoints (orders, account info) require API keys. Generate sandbox keys from each exchange's testnet portal and store them locally as `*.ignore.*` files (git-ignored).
 
 Example:
 ```
@@ -41,4 +55,6 @@ coinbase_api.ignore.txt
 ## Notes
 
 - Binance testnet resets ~monthly; API keys are preserved across resets
-- Upbit has no sandbox; use public market data endpoints only (no auth required for read)
+- Kraken spot has no public sandbox; UAT environment requires contacting support
+- Upbit has no sandbox; public market data uses KRW (Korean Won) as base currency
+- OKX sandbox uses the same production URL — sandbox mode is toggled via request header

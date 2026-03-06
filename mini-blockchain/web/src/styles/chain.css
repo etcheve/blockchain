@@ -1,0 +1,91 @@
+/* ── Chain scroll wrapper ────────────────────────────────────── */
+.chain-scroll {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 20px; /* space for scrollbar */
+}
+
+/* ── Chain layout (horizontal row) ──────────────────────────── */
+.chain {
+  display: inline-flex;   /* shrink-wraps to content width */
+  flex-direction: row;
+  align-items: stretch;   /* connectors stretch to block height */
+  min-width: 100%;
+}
+
+/* ── Connector between blocks ───────────────────────────────── */
+.chain-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* vertically center inside stretched height */
+  flex-shrink: 0;
+  padding: 0 16px;
+  gap: 8px;
+  color: #4b5563;
+  font-size: 0.68rem;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  letter-spacing: 0.04em;
+}
+
+.chain-connector-line {
+  width: 2px;
+  flex: 1;
+  max-height: 40px;
+  background: #2d2d50;
+}
+
+.chain-connector-arrow {
+  font-size: 1.2rem;
+  color: #3a3a5c;
+  line-height: 1;
+}
+
+.chain-connector-hash {
+  color: #4b5563;
+  writing-mode: horizontal-tb;
+  white-space: nowrap;
+  max-width: 64px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Add Block button ────────────────────────────────────────── */
+.btn-add-block {
+  align-self: center;
+  flex-shrink: 0;
+  margin-left: 20px;
+  padding: 10px 28px;
+  background: transparent;
+  border: 2px dashed #3a3a5c;
+  border-radius: 8px;
+  color: #6b7280;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  letter-spacing: 0.04em;
+}
+
+.btn-add-block:hover {
+  border-color: #6366f1;
+  color: #a5b4fc;
+}
+
+/* ── Parent hash field (read-only, distinct styling) ─────────── */
+.field-parent-hash {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.75rem;
+  background: #0d0d1f;
+  border: 1px solid #1e1e3a;
+  border-radius: 6px;
+  padding: 8px 12px;
+  word-break: break-all;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.field-parent-hash.genesis {
+  color: #374151;
+  font-style: italic;
+}
